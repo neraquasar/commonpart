@@ -1,0 +1,72 @@
+@font-face {
+  font-family: MyHelvetica;
+  src: local("Helvetica Neue Cyr Light"),
+       local("HelveticaNeueCyr-Light"),
+       url(HelveticaNeueCyr-Light.otf);
+  font-weight: light;
+}
+
+@font-face {
+  font-family: MySegoeUILight;
+  src: local("Segoe UI light"),
+       local("SegoeUI-light"),
+       url(segoeuil.ttf);
+  font-weight: light;
+}
+
+@font-face {
+  font-family: MySegoeUI;
+  src: local("Segoe UI"),
+       local("SegoeUI"),
+       url(segoeui.ttf);
+  font-weight: light;
+}
+
+body {
+    font-size: 14px;
+    font-family: MySegoeUI, "Segoe UI", "Arial", sans-serif;
+    margin: 0px;
+}
+
+/*button{
+    font-family: "Arial","Segoe UI Light", "Segoe UI", sans-serif;
+    font-size: 12px;
+    padding: 6px;
+    text-shadow: 0px;
+    border-width: 0px 0 0 0;
+}*/
+
+.ui-widget, .ui-widget .ui-widget, .ui-widget select, .ui-widget textarea, .ui-widget input {
+    font-family: "Segoe UI", "Arial", sans-serif;
+    font-size: 14px;
+}
+
+h1 {
+    font-family: MySegoeUILight, "Segoe UI", sans-serif; 
+    font-size:  20px;
+    font-weight: normal;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 0px;
+}
+
+h2 {
+    font-family: "Segoe UI", sans-serif;
+    font-size:  16px;
+    font-weight: normal;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 0px;
+}
+
+a:link, a:visited {
+  color: #045491;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+  color: #045491;
+  font-weight : bold;
+  text-decoration : underline;
+}

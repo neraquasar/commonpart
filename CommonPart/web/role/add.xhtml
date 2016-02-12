@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+     
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+    </h:head>
+     
+    <h:body>
+        <f:view>
+            <f:metadata>
+                <f:viewParam name="param" value="#{userRoleView.paramchain}"/>
+            </f:metadata>
+                    <h:form>
+                        <p:dataTable var="item" value="#{userRoleView.list_objects_active}"  emptyMessage="#{strings.main_i_tableempty}"> 
+                            <p:column headerText="#{strings.UserRole_i_name}" style="width:300px;text-align:center">
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            <p:column headerText="#{strings.UserRole_i_kind_global}" style="width:100px;text-align:center">
+                                <h:outputText value="#{strings.UserRole_i_kind_global}" rendered="#{item.kind_global}"/>
+                            </p:column>
+                            <p:column style="width:100px;text-align:center">
+                                <p:commandButton value="#{strings.main_i_add}" actionListener="#{userRoleView.select_do(item)}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+        </f:view>
+    </h:body>
+</html>

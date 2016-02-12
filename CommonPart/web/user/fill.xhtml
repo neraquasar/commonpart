@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>#{strings.UserData_entity}</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/newTemplate.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <f:metadata>
+                        <f:viewParam name="param" value="#{userDataView.paramchain}"/>
+                    </f:metadata>
+                    <h:form id="formcenter">
+                        <c:choose>
+                            <c:when test="#{!userLoginView.object.hasRole(1)}">
+                                <h:outputText value="#{strings.Login_f_RoleToWorkNeeded} #{userRoleView.getObject(1).name}"/>
+                            </c:when>
+                            <c:otherwise>
+
+                        #{userDataView.defineObject()}
+                                <p:panelGrid columns="3" styleClass="ui-noborder" style="text-align: right">
+                                    <h:outputLabel for="surname" value="#{strings.UserData_i_surname}: "/>
+                                    <p:inputText id="surname" value="#{userDataView.object.surname}" label="surname">
+                                        <f:validator validatorId="valconv.ValidatorNotNull"/>
+                                    </p:inputText>
+                                    <p:message for="surname"/>
+
+                                    <h:outputLabel for="name" value="#{strings.UserData_i_name}: "/>
+                                    <p:inputText id="name" value="#{userDataView.object.name}" label="name">
+                                        <f:validator validatorId="valconv.ValidatorNotNull"/>
+                                    </p:inputText>
+                                    <p:message for="name"/>
+
+                                    <h:outputLabel for="patronymic" value="#{strings.UserData_i_patronymic}: "/>
+                                    <p:inputText id="patronymic" value="#{userDataView.object.patronymic}" label="patronymic"/>
+                                    <p:message for="patronymic"/>
+
+                                    <h:outputLabel for="login" value="#{strings.UserData_i_login}: "/>
+                                    <p:inputText id="login" value="#{userDataView.object.login}" label="login" >
+                                        <f:validator validatorId="valconv.ValidatorNotNull"/>
+                                        <f:validator validatorId="valconv.ValidatorLoginContent"/>
+                                        <f:validator validatorId="valconv.ValidatorLoginExist"/>
+                                        <f:attribute name="currentlogin" value="#{userDataView.object.login}"/>
+                                    </p:inputText>
+                                    <p:message for="login"/>
+                                    
+                                    <!--возврат изображения штатными средствами нихуя не работает по причинам, не зависящим от разработчика приложения. Там что-то сложно-внутреннее-->
+                                    <!--h:outputLabel for="login" value="Фотография:  {userDataView.object.photo}"/>
+                                    <f:param name="item_id" value="{userDataView.object.photo}"/>
+                                    <p:graphicImage value="{fileView.getStreamedContent()}" width="100" rendered="{userDataView.object.photo!=null}">
+                                        <f:paradm name="item_id" value="{userDataView.object.photo}"/>
+                                    </p:graphicImage>
+                                     <p:graphicImage value="/noPhoto.png" width="100" rendered="{userDataView.object.photo==null}"/>
+                                     <p:fileUpload fileUploadListener="{fileView.handleFileUpload}"
+                                                  skinSimple="true" auto="true" label="Загрузить"
+                                                  sizeLimit="{generalNShared.fileSize}" invalidSizeMessage="{generalNShared.str_e_FileSizeExceeded}"
+                                                  update="formtop,downloadbtn"/>
+                                    
+                                    <p:commandButton id="downloadbtn" ajax="false" value="Скачать" immediate="true"
+                                                     action="{fileView.download(userDataView.object.photo)}" disabled="{userDataView.object.photo==null}"/-->
+                                    
+                                </p:panelGrid>
+                                <br/>    
+                                <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                                
+                                <p:commandButton value="#{strings.UserRole_i_addRole}" action="#{userRoleView.select_start(userDataView.object.roles_ID)}" immediate="true">
+                                    <p:ajax event="dialogReturn" listener="#{userDataView.onRoleAdded}" update="table,growl"/>
+                                </p:commandButton>
+
+                                <p:dataTable value="#{userDataView.object.rolestructure}" var="item" id="table"  emptyMessage="#{strings.main_i_tableempty}">
+                                    <p:column style="width:300px;text-align:center">
+                                        <h:outputText value="#{item.role.name}"/>
+                                    </p:column>
+                                    <p:column style="width:100px;text-align:center">
+                                        <p:commandButton value="#{strings.main_i_del}" action="#{userDataView.object.removeRole(item.role)}"
+                                                         immediate="true" update="table"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton value="#{strings.Organisation_entitys}" action="#{organisationView.select_start(item.orgs_ID)}"
+                                                         immediate="true" rendered="#{!item.role.kind_global}">
+                                            <p:ajax  listener="#{userDataView.setRoleTmp(item.role)}" />
+                                            <p:ajax event="dialogReturn" listener="#{userDataView.onOrganisationAdded}" update="table"/>
+                                        </p:commandButton>
+                                        <p:dataTable value="#{item.orgs}" var="item2" id="table2" rendered="#{!item.role.kind_global}"  emptyMessage="#{strings.main_i_tableempty}">
+                                            <p:column>
+                                                <h:outputText value="#{item2.name}"/>
+                                            </p:column>
+                                            <p:column style="width:100px;text-align:center">
+                                                <p:commandButton value="#{strings.main_i_del}" action="#{userDataView.object.removeOrganisation(item.role, item2)}"
+                                                                 immediate="true" update="table2"/>
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </p:column>
+                                </p:dataTable>                            
+
+                                <p:separator style="border: 0px; padding: 6px"/>
+
+                                <c:choose>
+                                    <c:when test="#{userDataView.isNewEntity()}">
+                                        <p:commandButton value="#{strings.main_i_add}" ajax="false"
+                                                         action="#{userDataView.post_do(fileView.fileID, userLoginView.object)}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:commandButton value="#{strings.main_i_save}" ajax="false"
+                                                         action="#{userDataView.edit_do(fileView.fileID, userLoginView.object)}"/>
+                                    </c:otherwise>
+                                </c:choose>
+                                <p:commandButton value="#{strings.main_i_cancel}" ajax="false"
+                                                 action="#{userDataView.getBack()}" immediate="true"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>#{strings.Organisation_entitys}</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/newTemplate.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <f:metadata>
+                        <f:viewParam name="param" value="#{organisationView.paramchain}"/>
+                    </f:metadata>
+                    <h:form id="formcenter">
+                        <c:choose>
+                            <c:when test="#{!userLoginView.object.hasRole(1)}">
+                                <h:outputText value="#{strings.Login_f_RoleToWorkNeeded} #{userRoleView.getObject(1).name}"/>
+                            </c:when>
+                            <c:otherwise>
+
+                                <p:commandButton value="#{strings.main_i_back}" action="#{organisationView.getBack()}"/>
+                                    <p:separator style="border-width: 0px; padding: 6px; background: #ffffff"/>
+                                    <p:commandButton value="#{strings.main_i_add}" action="#{organisationView.openFill('0')}"/>
+
+                                    <p:dataTable id="table" var="item" value="#{organisationView.list_objects_all}" style="padding-top: 5px"
+                                                  emptyMessage="#{strings.main_i_tableempty}">
+                                        <p:column headerText="#{strings.Organisation_i_name}">
+                                            <h:outputText value="#{item.name}" style="#{generalNShared.style_active_text(item.active)}"/>
+                                        </p:column>
+                                        <p:column width="100" style="text-align: center">
+                                            <p:commandButton value="#{strings.main_i_change}" action="#{organisationView.openFill(item.id)}" rendered="#{item.active}"/>
+                                        </p:column>
+                                        <p:column width="100" style="text-align: center">
+                                            <p:commandButton value="#{strings.main_i_deactivate}" action="#{organisationView.deactivate(item,userLoginView.object)}" update="table" rendered="#{item.active}"/>
+                                            <p:commandButton value="#{strings.main_i_activate}" action="#{organisationView.activate(item,userLoginView.object)}" update="table" rendered="#{!item.active}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                            </c:otherwise>
+                        </c:choose>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

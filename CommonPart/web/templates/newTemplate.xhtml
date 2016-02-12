@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+    </h:head>
+    <h:body>
+        <div id="top" class="top">
+            <ui:insert name="top">
+                <h:form id="formtop">
+                    <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                    
+                    <p:panelGrid id="grid" styleClass="ui-noborder">
+                        <p:column>
+                            <p:commandLink action="/index" ajax="false">
+                                <p:graphicImage value="/logo_mini.png" width="120"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <h1><h:outputText value="#{strings.Template_i_ProjectName}"/><br/></h1>
+                            <h:outputText value="#{strings.Template_i_userLogged} #{userLoginView.object.name} #{userLoginView.object.patronymic} #{userLoginView.object.surname} "/><br/>
+                            
+                            <p:commandButton value="#{userLoginView.loginActionName}" action="#{userLoginView.loginAction_start()}" immediate="true">
+                                <p:ajax event="dialogReturn" listener="#{userLoginView.onLoginAction}" update="formtop,formcenter" />
+                            </p:commandButton>
+                            
+                            <p:commandButton value="#{strings.Template_i_changePass}" action="#{userLoginView.resetPassword_start_dialog()}" rendered="#{userLoginView.isLogged()}">
+                                <p:ajax event="dialogReturn" listener="#{userLoginView.onPasswordCange}" update="growl"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:panelGrid>                   
+                </h:form>
+            </ui:insert>
+        </div>
+
+        <div id="content" class="center_content">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+
+    </h:body>
+
+</html>

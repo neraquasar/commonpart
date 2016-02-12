@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>#{strings.Log_entity}</title>
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="/templates/newTemplate.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <f:metadata>
+                        <f:viewParam name="param" value="#{logsView.paramchain}"/>
+                    </f:metadata>
+                    <h:form id="formcenter">
+                        <c:choose>
+                            <c:when test="#{!userLoginView.object.hasRole(1)}">
+                                <h:outputText value="#{strings.Login_f_RoleToWorkNeeded} #{userRoleView.getObject(1).name}"/>
+                            </c:when>
+                            <c:otherwise>
+
+                                <p:commandButton value="#{strings.main_i_back}" action="#{logsView.getBack()}" ajax="false"/>
+                                <p:separator style="border-width: 0px; padding: 6px; background: #ffffff"/>
+
+                                <p:dataTable var="item" value="#{logsView.list_objects_all}" style="padding-top: 5px"
+                                             resizableColumns="true" widgetVar="table" emptyMessage="#{strings.main_i_tableempty}">
+                                    <p:column headerText="#{strings.Log_i_entity}" filterMatchMode="contains" filterBy="#{logsView.getEntityName(item.entity)}" width="120">
+                                        <h:outputText value="#{logsView.getEntityName(item.entity)}"/>
+                                    </p:column>
+                                    <p:column headerText="#{strings.Log_i_idofinstance}" filterMatchMode="contains" filterBy="#{item.idofinstance}" width="120">
+                                        <h:outputText value="#{item.idofinstance}"/>
+                                    </p:column>
+                                    <p:column headerText="#{strings.Log_i_action}"  filterMatchMode="in" width="120" filterBy="#{logsView.getActionName(item.action)}">
+                                        <f:facet name="filter">
+                                            <p:selectCheckboxMenu label="Действия" onchange="PF('table').filter()" >
+                                                <f:selectItems value="#{logsView.actions}"/>
+                                            </p:selectCheckboxMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{logsView.getActionName(item.action)}"/>
+                                    </p:column>
+                                    <p:column headerText="#{strings.Log_i_timeofaction}" width="120">
+                                        <h:outputText value="#{item.timeofaction}">
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{generalNShared.timeZomeCurrent}"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{strings.Log_i_idofuser}" filterMatchMode="contains" filterBy="#{logsView.getUser(item.idofuser)}" width="280">
+                                        <h:outputText value="#{logsView.getUser(item.idofuser)}"/>
+                                    </p:column>
+                                    <p:column headerText="#{strings.Log_i_field_prewcontent}">
+                                        <h:outputText value="#{item.fieldPrewcontent}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </c:otherwise>
+                        </c:choose>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+        
+    </h:body>
+</html>
+

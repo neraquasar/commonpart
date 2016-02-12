@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>#{strings.Organisation_entity}</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/newTemplate.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <f:metadata>
+                        <f:viewParam name="param" value="#{organisationView.paramchain}"/>
+                    </f:metadata>
+                    <h:form id="formcenter">
+                        <c:choose>
+                            <c:when test="#{!userLoginView.object.hasRole(1)}">
+                                <h:outputText value="#{strings.Login_f_RoleToWorkNeeded} #{userRoleView.getObject(1).name}"/>
+                            </c:when>
+                            <c:otherwise>
+
+                        #{organisationView.defineObject()}
+                                <p:panelGrid columns="3" styleClass="ui-noborder" style="text-align: right">
+                                    <h:outputLabel for="name" value="#{strings.Organisation_i_name}: "/>
+                                    <p:inputText id="name" value="#{organisationView.object.name}" label="name" size="80">
+                                        <f:validator validatorId="valconv.ValidatorNotNull"/>
+                                        <f:validator validatorId="valconv.ValidatorOrgNameExist"/>
+                                        <f:attribute name="currentvalue" value="#{organisationView.object.name}"/>
+                                    </p:inputText>
+                                    <p:message for="name"/>
+                                </p:panelGrid>
+                                <br/>    
+
+                                <c:choose>
+                                    <c:when test="#{organisationView.isNewEntity()}">
+                                        <p:commandButton value="#{strings.main_i_add}" ajax="false"
+                                                         action="#{organisationView.post_do(userLoginView.object)}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:commandButton value="#{strings.main_i_save}" ajax="false"
+                                                         action="#{organisationView.edit_do(userLoginView.object)}"/>
+                                    </c:otherwise>
+                                </c:choose>
+                                <p:commandButton value="#{strings.main_i_cancel}" ajax="false"
+                                                 action="#{organisationView.getBack()}" immediate="true"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </h:form>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
