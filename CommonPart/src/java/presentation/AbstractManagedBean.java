@@ -116,7 +116,7 @@ public abstract class AbstractManagedBean<O extends AbstractEntity> {
     }
     
     /**
-     * для выдачи последнего элемента из цепочки с паратетрами
+     * для выдачи последнего звена из цепи наборов параметров
      * @param chain строка с разделителями
      * @return 
      */
@@ -177,9 +177,9 @@ public abstract class AbstractManagedBean<O extends AbstractEntity> {
     }
     
     /**
-     * для выдачи n-ного параметра из строки с цепями параметров
+     * для выдачи n-ного параметра из последнего набора цепи параметров
      * @param n номер искомого параметра (с 0-го)
-     * @return n-ную цепь параметров
+     * @return n-ный параметр из последнего набора в цепи
      */
     public String getParam (int n){
         return getLink(paramchain).split(Statics.delimiter_3)[n];
