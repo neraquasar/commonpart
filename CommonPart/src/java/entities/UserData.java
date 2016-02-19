@@ -157,12 +157,14 @@ public class UserData extends AbstractEntity implements Serializable, Comparable
         setRolestructure(rs);
     }
     
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Number id) {
-        this.id = id.longValue();
+        this.id = id!=null ? id.longValue() : null;
     }
 
     public String getName() {

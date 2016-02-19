@@ -84,7 +84,7 @@ public class Logs extends AbstractEntity implements Serializable {
 
     @Override
     public void setId(Number id) {
-        this.id = id.longValue();
+        this.id = id!=null ? id.longValue() : null;
     }
 
     public Short getEntity() {

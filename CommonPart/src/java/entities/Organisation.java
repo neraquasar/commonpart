@@ -58,7 +58,7 @@ public class Organisation extends AbstractEntity implements Serializable, Compar
 
     @Override
     public void setId(Number id) {
-        this.id = id.longValue();
+        this.id = id!=null ? id.longValue() : null;
     }
 
     public String getName() {

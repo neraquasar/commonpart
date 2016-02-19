@@ -216,6 +216,13 @@ public abstract class AbstractManagedBean<O extends AbstractEntity> {
         RequestContext.getCurrentInstance().openDialog("/"+rootdir+"/add.xhtml", options, params);
     }
     
+    public void select_start(Number id) {
+        Set<Number> ids = new HashSet<>();
+        if (id!=null)
+            ids.add(id);
+        select_start(ids);
+    }
+    
     /**
      * Для возвращения коллекции, из которой выброшены некоторые элементы.
      * Выброшенные элементы берутся из строки с параметрами.

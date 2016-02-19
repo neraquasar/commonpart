@@ -47,12 +47,14 @@ public class UserRole extends AbstractEntity implements Serializable, Comparable
         this.id = id;
     }
 
+    @Override
     public Short getId() {
         return id;
     }
 
+    @Override
     public void setId(Number id) {
-        this.id = id.shortValue();
+        this.id = id!=null ? id.shortValue() : null;
     }
 
     public Boolean getActive() {
